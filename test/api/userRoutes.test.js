@@ -9,11 +9,11 @@ describe("POST new user route", () => {
         firstName: "Alice",
         lastName: "Red",
         email: "alice@inigo.com",
-        password: "Jazz",
+        password: "Jazz123*91",
       })
       .expect(201)
       .expect((res) => {
-        console.log(res.body);
+        res.text = "User Created";
       });
   });
 
