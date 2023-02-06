@@ -3,17 +3,17 @@ const prisma = new PrismaClient();
 const checkCreateUSerData = require("../../utils/checkUserData");
 
 const findUser = async (req, res) => {
+  const { email } = req.body;
   try {
-    const { email } = req.body;
     const user = await prisma.user.findUnique({
       where: {
-        email: email,
+        email,
       },
     });
 
     res.json(user);
   } catch (err) {
-    // console.error(err.message);
+    console.error(err);
     res.status(404).send("User not found!");
   }
 };
@@ -24,7 +24,7 @@ const createUser = async (req, res) => {
   const data = checkCreateUSerData(firstName, lastName, email, password);
 
   try {
-    const newUser = await prisma.user.create({
+    await prisma.user.create({
       data,
     });
     res.status(201).send("User Created");
@@ -34,4 +34,19 @@ const createUser = async (req, res) => {
   }
 };
 
-module.exports = { findUser, createUser };
+const deleteUser = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    await prisma.user.delete({
+      where: {
+        email,
+      },
+    });
+    res.status(201).send("User Deleted");
+  } catch (err) {
+    res.status(400).send("Bad request!");
+  }
+};
+
+module.exports = { findUser, createUser, deleteUser };

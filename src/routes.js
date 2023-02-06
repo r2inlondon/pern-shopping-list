@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
-const { findUser, createUser } = require("./api/user/userRoutes");
+const { findUser, createUser, deleteUser } = require("./api/user/userRoutes");
 
 app.use(bodyParser.json());
 
@@ -18,5 +18,6 @@ app.get("/", (request, response) => {
 // Routes
 app.get("/user", findUser);
 app.post("/user/new", createUser);
+app.delete("/user", deleteUser);
 
 module.exports = { app };
