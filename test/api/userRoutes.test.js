@@ -2,7 +2,7 @@ const request = require("supertest");
 const { app } = require("../../src/routes");
 
 describe("POST new user route", () => {
-  test("Create User", async () => {
+  test("Create new user name Alice", async () => {
     const results = await request(app)
       .post("/user/new")
       .send({
@@ -33,8 +33,8 @@ describe("POST new user route", () => {
   });
 });
 
-describe("Get new user route", () => {
-  test("Get User", async () => {
+describe("Get user ROUTE", () => {
+  test("Find Alice", async () => {
     const results = await request(app)
       .get("/user")
       .send({
@@ -44,5 +44,14 @@ describe("Get new user route", () => {
       .expect((res) => {
         res.body.email = "alice@inigo.com";
       });
+  });
+});
+
+describe("Delete user ROUTE", () => {
+  test("Delete Alice", async () => {
+    const results = await request(app).delete("/user").send({
+      email: "alice@inigo.com",
+    });
+    expect(results.statusCode).toBe(201);
   });
 });
