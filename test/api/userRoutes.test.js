@@ -1,5 +1,5 @@
 const request = require("supertest");
-const { app } = require("../../src/routes");
+const { app } = require("../../src/routes/routes");
 
 describe("POST new user route", () => {
   test("Create new user name Alice", async () => {
