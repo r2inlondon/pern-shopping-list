@@ -36,4 +36,20 @@ const newList = async (req, res) => {
   }
 };
 
-module.exports = { getLists, newList };
+const deleteList = async (req, res) => {
+  const { id } = req.body;
+
+  try {
+    const deletedList = await prisma.list.delete({
+      where: {
+        id,
+      },
+    });
+    res.json(deletedList);
+  } catch (err) {
+    console.error(err.message);
+    res.status(400).send("Bad request!");
+  }
+};
+
+module.exports = { getLists, newList, deleteList };
