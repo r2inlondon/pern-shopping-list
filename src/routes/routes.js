@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const app = express();
 
 const user = require("./user/userRoutes");
+const shopping = require("./shopping/shoppingRoutes");
 
 // Type Script
 app.use(bodyParser.json());
@@ -19,5 +20,6 @@ app.use(
 
 // Routes
 app.use("/user", user);
+app.use("/shopping", shopping);
 
 module.exports = { app };
