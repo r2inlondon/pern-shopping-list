@@ -20,9 +20,6 @@ const getLists = async (req, res) => {
 
 const newList = async (req, res) => {
   const { userId, name } = req.body;
-
-  console.log({ userId, name });
-
   const listName = capitalizedWord(name);
 
   try {
