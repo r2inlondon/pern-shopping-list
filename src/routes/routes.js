@@ -2,8 +2,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 
-const user = require("./user/userRoutes");
-const shopping = require("./shopping/shoppingRoutes");
+const user = require("./userRoutes");
+const shopping = require("./shoppingRoutes");
+const lists = require("./listRoutes");
 
 // Type Script
 app.use(bodyParser.json());
@@ -21,5 +22,6 @@ app.use(
 // Routes
 app.use("/user", user);
 app.use("/shopping", shopping);
+app.use("/list", lists);
 
 module.exports = { app };
