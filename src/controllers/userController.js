@@ -45,6 +45,7 @@ const deleteUser = async (req, res) => {
     });
     res.status(201).send("User Deleted");
   } catch (err) {
+    console.error(err.message);
     res.status(400).send("Bad request!");
   }
 };
