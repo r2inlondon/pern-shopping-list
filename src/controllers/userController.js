@@ -1,6 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const checkCreateUSerData = require("../../utils/checkUserData");
+const checkCreateUSerData = require("../utils/checkUserData");
 
 const findUser = async (req, res) => {
   const { email } = req.body;
