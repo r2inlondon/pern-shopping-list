@@ -22,6 +22,6 @@ app.use(
 // Routes
 app.use("/user", user);
 app.use("/shopping", shopping);
-app.use("/list", lists);
+app.use("/lists", lists);
 
 module.exports = { app };
