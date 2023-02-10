@@ -1,7 +1,7 @@
 const request = require("supertest");
 const { app } = require("../../src/routes/routes");
 
-describe("Get lists Routes", () => {
+describe("lists Routes", () => {
   it("Get all list", async () => {
     const results = await request(app)
       .get("/lists")
