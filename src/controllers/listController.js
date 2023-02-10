@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const capitalizedWord = require("../utils/capitalizedWord");
 
 const getLists = async (req, res) => {
   const { userId } = req.body;
@@ -17,4 +18,25 @@ const getLists = async (req, res) => {
   }
 };
 
-module.exports = { getLists };
+const newList = async (req, res) => {
+  const { userId, name } = req.body;
+
+  console.log({ userId, name });
+
+  const listName = capitalizedWord(name);
+
+  try {
+    const newList = await prisma.list.create({
+      data: {
+        userId,
+        name: listName,
+      },
+    });
+    res.json(newList);
+  } catch (err) {
+    console.error(err.message);
+    res.status(400).send("Bad request!");
+  }
+};
+
+module.exports = { getLists, newList };
