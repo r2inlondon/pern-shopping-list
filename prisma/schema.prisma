@@ -11,14 +11,13 @@ datasource db {
 }
 
 model User {
-  id        String     @id @default(uuid())
-  createdAt DateTime   @default(now())
-  firstName String     @db.VarChar(255)
-  lastName  String     @db.VarChar(255)
-  email     String     @unique
-  password  String     @db.VarChar(60)
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  firstName String   @db.VarChar(255)
+  lastName  String   @db.VarChar(255)
+  email     String   @unique
+  password  String   @db.VarChar(60)
   Lists     List[]
-  shoppings Shopping[]
 }
 
 model List {
@@ -34,12 +33,10 @@ model Shopping {
   listId    String
   product   Product  @relation(fields: [productId], references: [id])
   productId String
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
   quantity  Int?     @default(1)
   completed Boolean? @default(false)
 
-  @@id([listId, productId, userId])
+  @@id([listId, productId])
 }
 
 model Product {

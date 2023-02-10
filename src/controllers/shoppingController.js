@@ -2,7 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const getAllProductsFromList = async (req, res) => {
-  const { userId, listId, productId } = req.body;
+  const { listId } = req.body;
 
   try {
     const shoppingContent = await prisma.shopping.findMany({

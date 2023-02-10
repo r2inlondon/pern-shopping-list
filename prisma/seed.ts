@@ -34,9 +34,6 @@ async function main() {
 
   const shoppingOne = await prisma.shopping.create({
     data: {
-      user: {
-        connect: { id: userOne.id },
-      },
       list: {
         connect: { id: listOne.id },
       },
@@ -68,9 +65,6 @@ async function main() {
 
   const shoppingTwo = await prisma.shopping.create({
     data: {
-      user: {
-        connect: { id: userTwo.id },
-      },
       list: {
         connect: { id: listTwo.id },
       },
@@ -82,9 +76,6 @@ async function main() {
 
   const shoppingThree = await prisma.shopping.create({
     data: {
-      user: {
-        connect: { id: userTwo.id },
-      },
       list: {
         connect: { id: listTwo.id },
       },
