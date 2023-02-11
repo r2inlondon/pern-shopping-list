@@ -5,6 +5,7 @@ const app = express();
 const user = require("./userRoutes");
 const shopping = require("./shoppingRoutes");
 const lists = require("./listRoutes");
+const products = require("./productRoutes");
 
 // Type Script
 app.use(bodyParser.json());
@@ -23,5 +24,6 @@ app.use(
 app.use("/user", user);
 app.use("/shopping", shopping);
 app.use("/lists", lists);
+app.use("/products", products);
 
 module.exports = { app };

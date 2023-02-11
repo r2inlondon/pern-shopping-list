@@ -8,6 +8,7 @@ const checkCreateUserData = (firstName, lastName, email, password) => {
     /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$/
   );
   const whiteSpace = new RegExp(/\s/);
+
   const checkFirstLetter = new RegExp(/^[A-Z]/);
 
   if (!checkFirstLetter.test(newFirstName)) {
