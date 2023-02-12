@@ -38,7 +38,25 @@ const newShoppingItem = async (req, res) => {
   }
 };
 
+const deleteShoppingItem = async (req, res) => {
+  const { shoppingId } = req.body;
+
+  try {
+    const listDeleteItem = await prisma.shopping.delete({
+      where: {
+        id: shoppingId,
+      },
+    });
+
+    res.json(listDeleteItem);
+  } catch (err) {
+    console.error(err);
+    res.status(400).send("Bad Request!");
+  }
+};
+
 module.exports = {
   getAllProductsFromList,
   newShoppingItem,
+  deleteShoppingItem,
 };

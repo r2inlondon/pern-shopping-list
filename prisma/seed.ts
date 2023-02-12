@@ -16,7 +16,7 @@ async function main() {
   });
 
   const productOne = await prisma.product.create({
-    data: { name: "shampoo" },
+    data: { name: "Shampoo" },
   });
 
   const productTwo = await prisma.product.create({
