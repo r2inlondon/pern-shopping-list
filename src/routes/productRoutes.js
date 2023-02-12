@@ -5,11 +5,13 @@ const {
   startsWith,
   createProduct,
   deleteProduct,
+  newProductInList,
 } = require("../controllers/productController");
 
 router.get("/", getAllProducts);
 router.get("/name", startsWith);
-router.get("/new", createProduct);
+router.post("/new", createProduct);
+router.post("/new/inlist", newProductInList);
 router.delete("/name", deleteProduct);
 
 module.exports = router;

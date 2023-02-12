@@ -20,4 +20,25 @@ const getAllProductsFromList = async (req, res) => {
   }
 };
 
-module.exports = { getAllProductsFromList };
+const newShoppingItem = async (req, res) => {
+  const { listId, productId } = req.body;
+
+  try {
+    const listNewItem = await prisma.shopping.create({
+      data: {
+        listId,
+        productId,
+      },
+    });
+
+    res.json(listNewItem);
+  } catch (err) {
+    console.error(err);
+    res.status(400).send("Bad Request!");
+  }
+};
+
+module.exports = {
+  getAllProductsFromList,
+  newShoppingItem,
+};

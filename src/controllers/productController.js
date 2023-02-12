@@ -69,4 +69,40 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-module.exports = { createProduct, getAllProducts, startsWith, deleteProduct };
+const newProductInList = async (req, res) => {
+  const { productName, listId } = req.body;
+
+  const newProductName = capitalizedWord(productName);
+
+  try {
+    const newProductInList = await prisma.product.create({
+      data: {
+        name: newProductName,
+        lists: {
+          create: [
+            {
+              list: {
+                connect: {
+                  id: listId,
+                },
+              },
+            },
+          ],
+        },
+      },
+    });
+
+    res.json(newProductInList);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Bad Request!");
+  }
+};
+
+module.exports = {
+  createProduct,
+  getAllProducts,
+  startsWith,
+  deleteProduct,
+  newProductInList,
+};
