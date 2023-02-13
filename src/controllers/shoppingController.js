@@ -38,6 +38,27 @@ const newShoppingItem = async (req, res) => {
   }
 };
 
+const updateShoppingItem = async (req, res) => {
+  const { id, completed, quantity } = req.body;
+
+  try {
+    const updatedShopping = await prisma.shopping.update({
+      where: {
+        id,
+      },
+      data: {
+        completed,
+        quantity,
+      },
+    });
+
+    res.json(updatedShopping);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Bad Request!");
+  }
+};
+
 const deleteShoppingItem = async (req, res) => {
   const { shoppingId } = req.body;
 
@@ -59,4 +80,5 @@ module.exports = {
   getAllProductsFromList,
   newShoppingItem,
   deleteShoppingItem,
+  updateShoppingItem,
 };

@@ -5,7 +5,6 @@ const capitalizedWord = require("../utils/capitalizedWord");
 const getLists = async (req, res) => {
   const { userId } = req.body;
 
-  console.log(userId);
   try {
     const lists = await prisma.list.findMany({
       where: {

@@ -4,10 +4,12 @@ const {
   getAllProductsFromList,
   newShoppingItem,
   deleteShoppingItem,
+  updateShoppingItem,
 } = require("../controllers/shoppingController");
 
 router.get("/", getAllProductsFromList);
 router.post("/new", newShoppingItem);
+router.put("/", updateShoppingItem);
 router.delete("/", deleteShoppingItem);
 
 module.exports = router;
