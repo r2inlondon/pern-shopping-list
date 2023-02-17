@@ -3,7 +3,8 @@ const prisma = new PrismaClient();
 const checkCreateUSerData = require("../utils/checkUserData");
 
 const getUser = async (req, res) => {
-  const { email } = req.body;
+  // console.log(req.params);
+  const { email } = req.params;
   try {
     const user = await prisma.user.findUnique({
       where: {

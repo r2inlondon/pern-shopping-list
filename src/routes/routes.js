@@ -1,13 +1,15 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
+const cors = require("cors");
 
 const user = require("./userRoutes");
 const shopping = require("./shoppingRoutes");
 const lists = require("./listRoutes");
 const products = require("./productRoutes");
 
-// Type Script
+// Middleware
+app.use(cors());
 app.use(bodyParser.json());
 
 app.get("/", (request, response) => {

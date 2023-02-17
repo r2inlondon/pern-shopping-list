@@ -8,8 +8,8 @@ const {
 } = require("../controllers/userController");
 
 // User Routes
-router.get("/", getUser);
+router.get("/:email", getUser);
 router.post("/new", createUser);
-router.delete("/", deleteUser);
+router.delete("/:email", deleteUser);
 
 module.exports = router;
