@@ -1,4 +1,5 @@
-import prisma from "../script";
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
 async function main() {
   await prisma.shopping.deleteMany({});
@@ -85,7 +86,7 @@ async function main() {
     },
   });
 
-  console.log("DB seed has been completed");
+  console.log("prisma seed has been completed");
 }
 
 main()
@@ -95,8 +96,6 @@ main()
 
   .catch(async (e) => {
     console.error(e);
-
     await prisma.$disconnect();
-
     process.exit(1);
   });

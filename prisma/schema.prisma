@@ -10,14 +10,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model RefreshToken {
+  id          String   @id @unique @default(uuid())
+  hashedToken String
+  userId      String
+  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  revoked     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 model User {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  firstName String   @db.VarChar(255)
-  lastName  String   @db.VarChar(255)
-  email     String   @unique
-  password  String   @db.VarChar(60)
-  Lists     List[]
+  id            String         @id @default(uuid())
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  firstName     String         @db.VarChar(255)
+  lastName      String         @db.VarChar(255)
+  email         String         @unique
+  password      String
+  refreshTokens RefreshToken[]
+  Lists         List[]
 }
 
 model List {
