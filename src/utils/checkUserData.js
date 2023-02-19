@@ -1,12 +1,12 @@
 const capitalizedWord = require("./capitalizedWord");
+const checkEmailRegex = require("./checkEmailRegex");
 
 const checkCreateUserData = (firstName, lastName, email, password) => {
   let newFirstName = firstName;
   let newLastName = lastName;
 
-  const checkEmail = new RegExp(
-    /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$/
-  );
+  const checkEmail = checkEmailRegex(email);
+
   const whiteSpace = new RegExp(/\s/);
 
   const checkFirstLetter = new RegExp(/^[A-Z]/);

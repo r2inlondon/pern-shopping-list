@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const app = express();
 const cors = require("cors");
 
-const user = require("./userRoutes");
+const auth = require("./authRoutes");
 const shopping = require("./shoppingRoutes");
 const lists = require("./listRoutes");
 const products = require("./productRoutes");
@@ -23,7 +23,7 @@ app.use(
 );
 
 // Routes
-app.use("/user", user);
+app.use("/auth", auth);
 app.use("/shopping", shopping);
 app.use("/lists", lists);
 app.use("/products", products);
