@@ -1,12 +1,12 @@
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+const { createUser } = require("../services/userServices");
+const db = require("../utils/db");
 const checkCreateUSerData = require("../utils/checkUserData");
 
 const getUser = async (req, res) => {
-  // console.log(req.params);
   const { email } = req.params;
+
   try {
-    const user = await prisma.user.findUnique({
+    const user = await db.user.findUnique({
       where: {
         email,
       },
@@ -19,18 +19,16 @@ const getUser = async (req, res) => {
   }
 };
 
-const createUser = async (req, res) => {
+const registerUser = async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
 
   const data = checkCreateUSerData(firstName, lastName, email, password);
 
   try {
-    await prisma.user.create({
-      data,
-    });
-    res.status(201).send("User Created");
+    const result = await createUser(data);
+    res.status(201).send(result);
   } catch (err) {
-    // console.error(err.message);
+    console.error(err.message);
     res.status(400).send("Bad request!");
   }
 };
@@ -39,7 +37,7 @@ const deleteUser = async (req, res) => {
   const { email } = req.body;
 
   try {
-    await prisma.user.delete({
+    await db.user.delete({
       where: {
         email,
       },
@@ -51,4 +49,4 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { getUser: getUser, createUser, deleteUser };
+module.exports = { getUser: getUser, registerUser, deleteUser };
