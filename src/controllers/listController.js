@@ -1,12 +1,11 @@
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+const db = require("../utils/db");
 const capitalizedWord = require("../utils/capitalizedWord");
 
 const getLists = async (req, res) => {
-  const { userId } = req.body;
+  const { userId } = req.payload;
 
   try {
-    const lists = await prisma.list.findMany({
+    const lists = await db.list.findMany({
       where: {
         userId,
       },
@@ -24,7 +23,7 @@ const newList = async (req, res) => {
   const listName = capitalizedWord(name);
 
   try {
-    const newList = await prisma.list.create({
+    const newList = await db.list.create({
       data: {
         userId,
         name: listName,
@@ -41,7 +40,7 @@ const deleteList = async (req, res) => {
   const { id } = req.body;
 
   try {
-    const deletedList = await prisma.list.delete({
+    const deletedList = await db.list.delete({
       where: {
         id,
       },
