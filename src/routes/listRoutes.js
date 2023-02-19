@@ -1,4 +1,5 @@
 const express = require("express");
+const { isAuthenticated } = require("../middleware/isAuthenticated");
 const router = express.Router();
 const {
   getLists,
@@ -7,7 +8,7 @@ const {
 } = require("../controllers/listController");
 
 // List routes
-router.get("/", getLists);
+router.get("/", isAuthenticated, getLists);
 router.post("/new", newList);
 router.delete("/", deleteList);
 
