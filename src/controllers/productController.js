@@ -69,7 +69,7 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-const newProductInList = async (req, res) => {
+const newProductInList = async (req, res, next) => {
   const { productName, listId } = req.body;
 
   const newProductName = capitalizedWord(productName);
@@ -94,8 +94,7 @@ const newProductInList = async (req, res) => {
 
     res.json(newProductInList);
   } catch (error) {
-    console.log(error);
-    res.status(400).send("Bad Request!");
+    next(error);
   }
 };
 

@@ -1,11 +1,10 @@
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+const db = require("../utils/db");
 
 const getAllProductsFromList = async (req, res) => {
   const { listId } = req.body;
 
   try {
-    const shoppingContent = await prisma.shopping.findMany({
+    const shoppingContent = await db.shopping.findMany({
       where: {
         listId,
       },
@@ -24,7 +23,7 @@ const newShoppingItem = async (req, res) => {
   const { listId, productId } = req.body;
 
   try {
-    const listNewItem = await prisma.shopping.create({
+    const listNewItem = await db.shopping.create({
       data: {
         listId,
         productId,
@@ -42,7 +41,7 @@ const updateShoppingItem = async (req, res) => {
   const { id, completed, quantity } = req.body;
 
   try {
-    const updatedShopping = await prisma.shopping.update({
+    const updatedShopping = await db.shopping.update({
       where: {
         id,
       },
@@ -63,7 +62,7 @@ const deleteShoppingItem = async (req, res) => {
   const { shoppingId } = req.body;
 
   try {
-    const listDeleteItem = await prisma.shopping.delete({
+    const listDeleteItem = await db.shopping.delete({
       where: {
         id: shoppingId,
       },

@@ -1,56 +1,41 @@
-const db = require("../utils/db");
 const capitalizedWord = require("../utils/capitalizedWord");
+const { findAll, createList, removeList } = require("../services/listServices");
 
-const getLists = async (req, res) => {
+const getLists = async (req, res, next) => {
   const { userId } = req.payload;
 
   try {
-    const lists = await db.list.findMany({
-      where: {
-        userId,
-      },
-    });
-
+    const lists = await findAll(userId);
     res.json(lists);
   } catch (err) {
-    console.error(err);
-    res.status(400).send("Query Error!");
+    next(err);
   }
 };
 
-const newList = async (req, res) => {
+const newList = async (req, res, next) => {
   const { name } = req.body;
   const { userId } = req.payload;
 
   const listName = capitalizedWord(name);
 
   try {
-    const newList = await db.list.create({
-      data: {
-        userId,
-        name: listName,
-      },
-    });
+    const newList = await createList(userId, listName);
+
     res.json(newList);
   } catch (err) {
-    console.error(err.message);
-    res.status(400).send("Bad request!");
+    next(err);
   }
 };
 
-const deleteList = async (req, res) => {
+const deleteList = async (req, res, next) => {
   const { id } = req.body;
 
   try {
-    const deletedList = await db.list.delete({
-      where: {
-        id,
-      },
-    });
+    const deletedList = await removeList(id);
+
     res.json(deletedList);
   } catch (err) {
-    console.error(err.message);
-    res.status(400).send("Bad request!");
+    next(err);
   }
 };
 
