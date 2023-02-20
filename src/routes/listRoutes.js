@@ -9,7 +9,7 @@ const {
 
 // List routes
 router.get("/", isAuthenticated, getLists);
-router.post("/new", newList);
+router.post("/new", isAuthenticated, newList);
 router.delete("/", deleteList);
 
 module.exports = router;

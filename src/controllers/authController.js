@@ -43,8 +43,7 @@ const registerUser = async (req, res, next) => {
       refreshToken,
     });
   } catch (err) {
-    console.error(err.message);
-    res.status(400).send("Bad request!");
+    next(err);
   }
 };
 
@@ -84,8 +83,7 @@ const login = async (req, res, next) => {
       refreshToken,
     });
   } catch (err) {
-    console.error(err);
-    res.status(404).send("Bad request");
+    next(err);
   }
 };
 
