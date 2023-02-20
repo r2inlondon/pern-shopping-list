@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { isAuthenticated } = require("../middleware/isAuthenticated");
 const {
   getAllProductsFromList,
   newShoppingItem,
@@ -7,9 +8,9 @@ const {
   updateShoppingItem,
 } = require("../controllers/shoppingController");
 
-router.get("/", getAllProductsFromList);
-router.post("/new", newShoppingItem);
-router.put("/", updateShoppingItem);
-router.delete("/", deleteShoppingItem);
+router.get("/", isAuthenticated, getAllProductsFromList);
+router.post("/new", isAuthenticated, newShoppingItem);
+router.put("/", isAuthenticated, updateShoppingItem);
+router.delete("/", isAuthenticated, deleteShoppingItem);
 
 module.exports = router;
