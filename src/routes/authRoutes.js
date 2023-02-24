@@ -12,6 +12,6 @@ const {
 router.post("/", login);
 router.post("/register", registerUser);
 router.post("/refreshToken", refreshToken);
-router.delete("/:email", deleteUser);
+router.delete("/delete", deleteUser);
 
 module.exports = router;
