@@ -136,7 +136,7 @@ const refreshToken = async (req, res, next) => {
   }
 };
 
-const deleteUser = async (req, res) => {
+const deleteUser = async (req, res, next) => {
   const { email } = req.body;
 
   try {
@@ -147,8 +147,7 @@ const deleteUser = async (req, res) => {
     });
     res.status(201).send("User Deleted");
   } catch (err) {
-    console.error(err.message);
-    res.status(400).send("Bad request!");
+    next(err);
   }
 };
 

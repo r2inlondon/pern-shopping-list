@@ -4,8 +4,7 @@ const checkEmailRegex = require("./checkEmailRegex");
 const checkCreateUserData = (firstName, lastName, email, password) => {
   let newFirstName = firstName;
   let newLastName = lastName;
-
-  const checkEmail = checkEmailRegex(email);
+  const userEmail = email.toLocaleLowerCase();
 
   const whiteSpace = new RegExp(/\s/);
 
@@ -19,7 +18,7 @@ const checkCreateUserData = (firstName, lastName, email, password) => {
     newLastName = capitalizedWord(newLastName);
   }
 
-  if (!checkEmail.test(email)) {
+  if (!checkEmailRegex(userEmail)) {
     return false;
   }
 
@@ -30,7 +29,7 @@ const checkCreateUserData = (firstName, lastName, email, password) => {
   const data = {
     firstName: newFirstName,
     lastName: newLastName,
-    email,
+    email: userEmail,
     password,
   };
 

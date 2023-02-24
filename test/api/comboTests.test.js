@@ -2,22 +2,25 @@ const request = require("supertest");
 const { app } = require("../../src/routes/routes");
 
 describe("Combining tests", () => {
-  const comboUserEmail = "zapata@hotmail.com";
-  let auhtTokens;
+  let authTokens;
   let listObj;
   let productObj;
   let shoppingObj;
 
   it("ComboTest Create new user", async () => {
     await request(app)
-      .post("/user/new")
+      .post("/auth/register")
       .send({
         firstName: "Emiliano",
         lastName: "Zapata",
-        email: comboUserEmail,
+        email: "zaPata@HOTMAIL.com",
         password: "Jazz123*91",
       })
-      .expect(201);
+      .then((res) => {
+        authTokens = res.body;
+        const tokenArr = Object.keys(res.body);
+        expect(tokenArr.length).toBe(2);
+      });
   });
 
   // it("ComboTest get user", async () => {
@@ -32,66 +35,68 @@ describe("Combining tests", () => {
   //     });
   // });
 
-  // it("ComboTest create List", async () => {
-  //   await request(app)
-  //     .post("/lists/new")
-  //     .send({
-  //       userId: auhtTokens.id,
-  //       name: "gigante",
-  //     })
-  //     .then((res) => {
-  //       listObj = res.body;
-  //       expect(res.body.name).toBe("Gigante");
-  //     });
-  // });
+  it("ComboTest create List", async () => {
+    await request(app)
+      .post("/lists/new")
+      .send({
+        userId: authTokens.id,
+        name: "gigante",
+      })
+      .set("Authorization", `Bearer ${authTokens.accessToken}`)
+      .then((res) => {
+        listObj = res.body;
+        expect(res.body.name).toBe("Gigante");
+      });
+  });
 
-  // it("Get all list", async () => {
-  //   await request(app)
-  //     .get("/lists")
-  //     .send({
-  //       userId: auhtTokens.id,
-  //     })
-  //     .then((res) => {
-  //       expect(res.body.length).toBe(1);
-  //     });
-  // });
+  it("Get all list", async () => {
+    await request(app)
+      .get("/lists")
+      .set("Authorization", `Bearer ${authTokens.accessToken}`)
+      .then((res) => {
+        expect(res.body.length).toBe(1);
+      });
+  });
 
-  // it("create new item and insert to List", async () => {
-  //   await request(app)
-  //     .post("/products/new/inlist")
-  //     .send({
-  //       listId: listObj.id,
-  //       productName: "beer",
-  //     })
-  //     .then((res) => {
-  //       productObj = res.body;
-  //       expect(res.body.name).toBe("Beer");
-  //     });
-  // });
+  it("Add item to List", async () => {
+    await request(app)
+      .post("/shopping/new")
+      .send({
+        listId: listObj.id,
+        name: "beer",
+      })
+      .set("Authorization", `Bearer ${authTokens.accessToken}`)
+      .then((res) => {
+        productObj = res.body;
+        expect(res.statusCode).toBe(200);
+      });
+  });
 
-  // it("Get products in list", async () => {
-  //   await request(app)
-  //     .get("/shopping")
-  //     .send({
-  //       listId: listObj.id,
-  //     })
-  //     .then((res) => {
-  //       shoppingObj = res.body[0];
-  //       expect(res.body.length).toBe(1);
-  //     });
-  // });
+  it("Get products in list", async () => {
+    await request(app)
+      .get("/shopping")
+      .send({
+        listId: listObj.id,
+      })
+      .set("Authorization", `Bearer ${authTokens.accessToken}`)
+      .then((res) => {
+        shoppingObj = res.body[0];
+        expect(res.body.length).toBe(1);
+      });
+  });
 
-  // it("Mark product in list as completed", async () => {
-  //   await request(app)
-  //     .put("/shopping")
-  //     .send({
-  //       id: shoppingObj.id,
-  //       completed: true,
-  //     })
-  //     .then((res) => {
-  //       expect(res.body.completed).toBe(true);
-  //     });
-  // });
+  it("Mark product in list as completed", async () => {
+    await request(app)
+      .put("/shopping")
+      .send({
+        id: shoppingObj.id,
+        completed: true,
+      })
+      .set("Authorization", `Bearer ${authTokens.accessToken}`)
+      .then((res) => {
+        expect(res.body.completed).toBe(true);
+      });
+  });
 
   // // Test delete all data
   // it("Delete item in Shopping", async () => {
@@ -125,14 +130,14 @@ describe("Combining tests", () => {
   //     .then((res) => expect(res.body.name).toBe("Gigante"));
   // });
 
-  // it("Delete Emiliano", async () => {
-  //   await request(app)
-  //     .delete("/user")
-  //     .send({
-  //       email: auhtTokens.email,
-  //     })
-  //     .then((res) => {
-  //       expect(res.statusCode).toBe(201);
-  //     });
-  // });
+  it("Delete Emiliano", async () => {
+    await request(app)
+      .delete("/auth/delete")
+      .send({
+        email: "zapata@hotmail.com",
+      })
+      .then((res) => {
+        expect(res.statusCode).toBe(201);
+      });
+  });
 });

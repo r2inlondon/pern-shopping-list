@@ -1,105 +1,51 @@
 const capitalizedWord = require("../utils/capitalizedWord");
+const { gellAll } = require("../services/productServices");
 
-const createProduct = async (req, res) => {
-  const { name } = req.body;
-
-  const newName = capitalizedWord(name);
-
+const getAllProducts = async (req, res, next) => {
   try {
-    const newProduct = await prisma.product.create({
-      data: {
-        name: newName,
-      },
-    });
-
-    res.json(newProduct);
-  } catch (err) {
-    console.log(err);
-    res.status(400).send("Query Error!");
-  }
-};
-
-const getAllProducts = async (req, res) => {
-  try {
-    const getAllProducts = await prisma.product.findMany();
+    const getAllProducts = await gellAll();
     res.json(getAllProducts);
   } catch (err) {
-    console.log(err);
-    res.status(400).send("Query Error!");
+    next(err);
   }
 };
 
-const startsWith = async (req, res) => {
-  const { name } = req.body;
+// const createProduct = async (req, res) => {
+//   const { name } = req.body;
 
-  const newName = capitalizedWord(name);
+//   const newName = capitalizedWord(name);
 
-  try {
-    const productResults = await prisma.product.findMany({
-      where: {
-        name: {
-          startsWith: newName,
-        },
-      },
-    });
+//   try {
+//     const newProduct = await prisma.product.create({
+//       data: {
+//         name: newName,
+//       },
+//     });
 
-    res.json(productResults);
-  } catch (err) {
-    console.log(err);
-    res.status(400).send("Query Error!");
-  }
-};
+//     res.json(newProduct);
+//   } catch (err) {
+//     console.log(err);
+//     res.status(400).send("Query Error!");
+//   }
+// };
 
-const deleteProduct = async (req, res) => {
-  const { name } = req.body;
+// const deleteProduct = async (req, res) => {
+//   const { name } = req.body;
 
-  try {
-    const deleteResult = await prisma.product.delete({
-      where: {
-        name,
-      },
-    });
+//   try {
+//     const deleteResult = await prisma.product.delete({
+//       where: {
+//         name,
+//       },
+//     });
 
-    res.json(deleteResult);
-  } catch (err) {
-    console.log(err);
-    res.status(400).send("Query Error!");
-  }
-};
-
-const newProductInList = async (req, res, next) => {
-  const { productName, listId } = req.body;
-
-  const newProductName = capitalizedWord(productName);
-
-  try {
-    const newProductInList = await prisma.product.create({
-      data: {
-        name: newProductName,
-        lists: {
-          create: [
-            {
-              list: {
-                connect: {
-                  id: listId,
-                },
-              },
-            },
-          ],
-        },
-      },
-    });
-
-    res.json(newProductInList);
-  } catch (error) {
-    next(error);
-  }
-};
+//     res.json(deleteResult);
+//   } catch (err) {
+//     console.log(err);
+//     res.status(400).send("Query Error!");
+//   }
+// };
 
 module.exports = {
-  createProduct,
   getAllProducts,
-  startsWith,
-  deleteProduct,
-  newProductInList,
 };
