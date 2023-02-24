@@ -1,77 +1,68 @@
-const db = require("../utils/db");
+const capitalizedWord = require("../utils/capitalizedWord");
+const { findProduct } = require("../services/productServices");
+const {
+  createNewProductAndInsert,
+  addExistingProductToList,
+  getAllItems,
+  updateItem,
+  deleteItem,
+} = require("../services/shoppingServices");
 
 const getAllProductsFromList = async (req, res) => {
   const { listId } = req.body;
 
   try {
-    const shoppingContent = await db.shopping.findMany({
-      where: {
-        listId,
-      },
-      include: {
-        product: true,
-      },
-    });
+    const shoppingContent = await getAllItems(listId);
+
     res.json(shoppingContent);
   } catch (err) {
-    console.error(err);
-    res.status(404).send("Not found!");
+    next(err);
   }
 };
 
-const newShoppingItem = async (req, res) => {
-  const { listId, productId } = req.body;
+const newShoppingItem = async (req, res, next) => {
+  const { listId, name } = req.body;
+
+  const productName = capitalizedWord(name);
+
+  let productOnList;
 
   try {
-    const listNewItem = await db.shopping.create({
-      data: {
-        listId,
-        productId,
-      },
-    });
+    const productFound = await findProduct(productName);
 
-    res.json(listNewItem);
+    if (productFound) {
+      productOnList = await addExistingProductToList(listId, productFound.id);
+    } else {
+      productOnList = await createNewProductAndInsert(productName, listId);
+    }
+
+    res.json(productOnList);
   } catch (err) {
-    console.error(err);
-    res.status(400).send("Bad Request!");
+    next(err);
   }
 };
 
-const updateShoppingItem = async (req, res) => {
+const updateShoppingItem = async (req, res, next) => {
   const { id, completed, quantity } = req.body;
 
   try {
-    const updatedShopping = await db.shopping.update({
-      where: {
-        id,
-      },
-      data: {
-        completed,
-        quantity,
-      },
-    });
+    let updatedShopping = await updateItem(id, completed, quantity);
 
     res.json(updatedShopping);
   } catch (error) {
-    console.log(error);
-    res.status(400).send("Bad Request!");
+    next(err);
   }
 };
 
-const deleteShoppingItem = async (req, res) => {
+const deleteShoppingItem = async (req, res, next) => {
   const { shoppingId } = req.body;
 
   try {
-    const listDeleteItem = await db.shopping.delete({
-      where: {
-        id: shoppingId,
-      },
-    });
+    const listDeleteItem = await deleteItem(shoppingId);
 
     res.json(listDeleteItem);
   } catch (err) {
-    console.error(err);
-    res.status(400).send("Bad Request!");
+    next(err);
   }
 };
 

@@ -10,7 +10,7 @@ const {
 
 // User Routes
 router.post("/", login);
-router.post("/new", registerUser);
+router.post("/register", registerUser);
 router.post("/refreshToken", refreshToken);
 router.delete("/:email", deleteUser);
 
