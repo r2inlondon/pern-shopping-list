@@ -45,8 +45,8 @@ model Shopping {
   list      List     @relation(fields: [listId], references: [id], onDelete: Cascade)
   listId    String
   product   Product  @relation(fields: [productId], references: [id])
-  productId String
-  quantity  Int?     @default(1)
+  productId String   @unique
+  quantity  Int?
   completed Boolean? @default(false)
 }
 

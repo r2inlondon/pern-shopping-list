@@ -1,5 +1,3 @@
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
 const capitalizedWord = require("../utils/capitalizedWord");
 
 const createProduct = async (req, res) => {
