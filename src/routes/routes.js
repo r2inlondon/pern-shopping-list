@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const auth = require("./authRoutes");
 const shopping = require("./shoppingRoutes");
@@ -12,6 +13,7 @@ const verifyJWT = require("../middleware/verifyJWT");
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 app.get("/", (request, response) => {
   response.json({ message: "Root Route Page" });

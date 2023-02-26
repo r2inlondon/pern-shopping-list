@@ -1,14 +1,16 @@
 const jwt = require("jsonwebtoken");
 const { findUserById } = require("../services/userServices");
+const { hashToken } = require("../utils/hashToken");
 
 const {
   addRefreshTokenToWhitelist,
   findRefreshTokenById,
   deleteRefreshToken,
 } = require("../services/authServices");
-const { hashToken } = require("../utils/hashToken");
 
-const refreshToken = async (req, res, next) => {
+const handleRefreshToken = async (req, res, next) => {
+  const cookies = req.cookies;
+
   try {
     const { refreshToken } = req.body;
     if (!refreshToken) {
@@ -57,4 +59,4 @@ const refreshToken = async (req, res, next) => {
   }
 };
 
-module.exports = refreshToken;
+module.exports = handleRefreshToken;
