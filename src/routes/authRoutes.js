@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const refreshToken = require("../controllers/refreshToken");
+const handleRefreshToken = require("../controllers/refreshTokenController");
 
 const {
   login,
@@ -12,7 +12,7 @@ const {
 // User Routes
 router.post("/", login);
 router.post("/register", registerUser);
-router.post("/refreshToken", refreshToken);
+router.post("/refreshToken", handleRefreshToken);
 router.delete("/delete", deleteUser);
 
 module.exports = router;
