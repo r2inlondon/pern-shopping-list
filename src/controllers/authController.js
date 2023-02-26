@@ -1,20 +1,10 @@
 const { v4: uuidv4 } = require("uuid");
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const {
-  createUser,
-  findUserByEmail,
-  findUserById,
-} = require("../services/userServices");
+const { createUser, findUserByEmail } = require("../services/userServices");
 const db = require("../utils/db");
 const checkCreateUSerData = require("../utils/checkUserData");
 const { generateTokens } = require("../utils/jwt");
-const {
-  addRefreshTokenToWhitelist,
-  findRefreshTokenById,
-  deleteRefreshToken,
-} = require("../services/authServices");
-const { hashToken } = require("../utils/hashToken");
+const { addRefreshTokenToWhitelist } = require("../services/authServices");
 
 const registerUser = async (req, res, next) => {
   const { firstName, lastName, email, password } = req.body;
@@ -38,10 +28,13 @@ const registerUser = async (req, res, next) => {
     const { accessToken, refreshToken } = generateTokens(user, jti);
     await addRefreshTokenToWhitelist({ jti, refreshToken, userId: user.id });
 
-    res.json({
-      accessToken,
-      refreshToken,
+    res.cookie("jwt", refreshToken, {
+      httpOnly: true,
+      sameSite: "None",
+      secure: true,
+      maxAge: 24 * 60 * 60 * 1000,
     });
+    res.json(accessToken);
   } catch (err) {
     next(err);
   }
@@ -78,59 +71,7 @@ const login = async (req, res, next) => {
       userId: existingUser.id,
     });
 
-    res.json({
-      accessToken,
-      refreshToken,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
-const refreshToken = async (req, res, next) => {
-  try {
-    const { refreshToken } = req.body;
-    if (!refreshToken) {
-      res.status(400);
-      throw new Error("Missing refresh token.");
-    }
-
-    const payload = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
-    const savedRefreshToken = await findRefreshTokenById(payload.jti);
-
-    if (!savedRefreshToken || savedRefreshToken.revoked === true) {
-      res.status(401);
-      throw new Error("Unauthorized");
-    }
-
-    const hashedToken = hashToken(refreshToken);
-    if (hashedToken !== savedRefreshToken.hashedToken) {
-      res.status(401);
-      throw new Error("Unauthorized");
-    }
-
-    const user = await findUserById(payload.userId);
-    if (!user) {
-      res.status(401);
-      throw new Error("Unauthorized");
-    }
-
-    await deleteRefreshToken(savedRefreshToken.id);
-    const jti = uuidv4();
-    const { accessToken, refreshToken: newRefreshToken } = generateTokens(
-      user,
-      jti
-    );
-    await addRefreshTokenToWhitelist({
-      jti,
-      refreshToken: newRefreshToken,
-      userId: user.id,
-    });
-
-    res.json({
-      accessToken,
-      refreshToken: newRefreshToken,
-    });
+    res.json({ accessToken });
   } catch (err) {
     next(err);
   }
@@ -151,4 +92,4 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
-module.exports = { login, registerUser, refreshToken, deleteUser };
+module.exports = { login, registerUser, deleteUser };

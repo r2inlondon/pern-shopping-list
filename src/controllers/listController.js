@@ -2,10 +2,11 @@ const capitalizedWord = require("../utils/capitalizedWord");
 const { findAll, createList, removeList } = require("../services/listServices");
 
 const getLists = async (req, res, next) => {
-  const { userId } = req.payload;
+  // console.log(req);
+  // const { userId } = req.payload;
 
   try {
-    const lists = await findAll(userId);
+    const lists = await findAll(req.userId);
     res.json(lists);
   } catch (err) {
     next(err);
