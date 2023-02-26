@@ -30,4 +30,20 @@ const createUser = ({ firstName, lastName, email, password }) => {
   });
 };
 
-module.exports = { createUser, findUserByEmail, findUserById };
+const addRefreshTokenToUser = (id, refreshToken) => {
+  return db.user.update({
+    where: {
+      id,
+    },
+    data: {
+      refreshToken,
+    },
+  });
+};
+
+module.exports = {
+  createUser,
+  findUserByEmail,
+  findUserById,
+  addRefreshTokenToUser,
+};

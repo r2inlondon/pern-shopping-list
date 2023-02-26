@@ -1,10 +1,12 @@
-const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
-const { createUser, findUserByEmail } = require("../services/userServices");
+const {
+  createUser,
+  findUserByEmail,
+  addRefreshTokenToUser,
+} = require("../services/userServices");
 const db = require("../utils/db");
 const checkCreateUSerData = require("../utils/checkUserData");
-const { generateTokens } = require("../utils/jwt");
-const { addRefreshTokenToWhitelist } = require("../services/authServices");
+const { generateTokens } = require("../utils/generateTokens");
 
 const registerUser = async (req, res, next) => {
   const { firstName, lastName, email, password } = req.body;
@@ -24,9 +26,9 @@ const registerUser = async (req, res, next) => {
 
     const data = checkCreateUSerData(firstName, lastName, email, password);
     const user = await createUser(data);
-    const jti = uuidv4();
-    const { accessToken, refreshToken } = generateTokens(user, jti);
-    await addRefreshTokenToWhitelist({ jti, refreshToken, userId: user.id });
+    const { accessToken, refreshToken } = generateTokens(user);
+
+    await addRefreshTokenToUser(user.id, refreshToken);
 
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
@@ -64,13 +66,9 @@ const login = async (req, res, next) => {
       throw new Error("Invalid login credentials.");
     }
 
-    const jti = uuidv4();
-    const { accessToken, refreshToken } = generateTokens(existingUser, jti);
-    await addRefreshTokenToWhitelist({
-      jti,
-      refreshToken,
-      userId: existingUser.id,
-    });
+    const { accessToken, refreshToken } = generateTokens(existingUser);
+
+    await addRefreshTokenToUser(existingUser.id, refreshToken);
 
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
