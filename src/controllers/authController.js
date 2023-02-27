@@ -30,7 +30,7 @@ const registerUser = async (req, res, next) => {
     const user = await createUser(data);
     const { accessToken, refreshToken } = generateTokens(user.id);
 
-    await addRefreshTokenToUser(user.id, refreshToken);
+    await refreshTokenToUser(user.id, refreshToken);
 
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
@@ -39,7 +39,7 @@ const registerUser = async (req, res, next) => {
       maxAge: 24 * 60 * 60 * 1000,
     });
 
-    res.json(accessToken);
+    res.json({ accessToken });
   } catch (err) {
     next(err);
   }
@@ -54,7 +54,7 @@ const login = async (req, res, next) => {
       throw new Error("You must provide an email and a password.");
     }
 
-    const existingUser = await findUserByEmail(email);
+    const existingUser = await findUserByEmail(email.toLocaleLowerCase());
 
     if (!existingUser) {
       res.status(403);

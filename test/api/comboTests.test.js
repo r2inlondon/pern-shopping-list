@@ -7,7 +7,7 @@ describe("Combining tests", () => {
   let productObj;
   let shoppingObj;
 
-  it("ComboTest Create new user", async () => {
+  it("Create new user", async () => {
     await request(app)
       .post("/auth/register")
       .send({
@@ -17,23 +17,22 @@ describe("Combining tests", () => {
         password: "Jazz123*91",
       })
       .then((res) => {
-        authTokens = res.body;
-        const tokenArr = Object.keys(res.body);
-        expect(tokenArr.length).toBe(2);
+        expect(res.statusCode).toBe(200);
       });
   });
 
-  // it("ComboTest get user", async () => {
-  //   await request(app)
-  //     .get("/user")
-  //     .send({
-  //       email: comboUserEmail,
-  //     })
-  //     .then((res) => {
-  //       auhtTokens = res.body;
-  //       expect(res.body.email).toBe("zapata@hotmail.com");
-  //     });
-  // });
+  it("User Login", async () => {
+    await request(app)
+      .post("/auth")
+      .send({
+        email: "zaPata@HOTMAIL.com",
+        password: "Jazz123*91",
+      })
+      .then((res) => {
+        authTokens = res.body;
+        expect(res.statusCode).toBe(200);
+      });
+  });
 
   it("ComboTest create List", async () => {
     await request(app)
