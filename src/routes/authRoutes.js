@@ -5,6 +5,7 @@ const handleRefreshToken = require("../controllers/refreshTokenController");
 
 const {
   login,
+  logout,
   registerUser,
   deleteUser,
 } = require("../controllers/authController");
@@ -12,7 +13,8 @@ const {
 // User Routes
 router.post("/", login);
 router.post("/register", registerUser);
-router.post("/refreshToken", handleRefreshToken);
+router.get("/refreshToken", handleRefreshToken);
+router.get("/", logout);
 router.delete("/delete", deleteUser);
 
 module.exports = router;
