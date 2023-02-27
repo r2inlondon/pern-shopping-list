@@ -17,6 +17,14 @@ const findUserById = (id) => {
   });
 };
 
+const findUserByRefreshToken = (refreshToken) => {
+  return db.user.findFirst({
+    where: {
+      refreshToken,
+    },
+  });
+};
+
 const createUser = ({ firstName, lastName, email, password }) => {
   const encryptedPass = bcrypt.hashSync(password, 12);
 
@@ -30,7 +38,7 @@ const createUser = ({ firstName, lastName, email, password }) => {
   });
 };
 
-const addRefreshTokenToUser = (id, refreshToken) => {
+const refreshTokenToUser = (id, refreshToken) => {
   return db.user.update({
     where: {
       id,
@@ -41,9 +49,22 @@ const addRefreshTokenToUser = (id, refreshToken) => {
   });
 };
 
+const removeRefreshToken = (id) => {
+  return db.user.update({
+    where: {
+      id,
+    },
+    data: {
+      refreshToken: "",
+    },
+  });
+};
+
 module.exports = {
   createUser,
   findUserByEmail,
   findUserById,
-  addRefreshTokenToUser,
+  refreshTokenToUser,
+  findUserByRefreshToken,
+  removeRefreshToken,
 };
