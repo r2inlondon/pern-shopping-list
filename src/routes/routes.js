@@ -4,15 +4,25 @@ const app = express();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
+const corsOptions = require("../config/corsOptions");
+const credentials = require("../middleware/credentials");
 const auth = require("./authRoutes");
 const shopping = require("./shoppingRoutes");
 const lists = require("./listRoutes");
 const products = require("./productRoutes");
 const verifyJWT = require("../middleware/verifyJWT");
 
-// Middleware
-app.use(cors());
+// Handle options credentials check - before CORS!
+// and fetch cookies credentials requirement
+app.use(credentials);
+
+// Cross Origin Resource Sharing
+app.use(cors(corsOptions));
+
+// built-in middleware for json
 app.use(bodyParser.json());
+
+//middleware for cookies
 app.use(cookieParser());
 
 app.get("/", (request, response) => {
