@@ -5,6 +5,7 @@ const checkCreateUserData = (firstName, lastName, email, password) => {
   let newFirstName = firstName;
   let newLastName = lastName;
   const userEmail = email.toLocaleLowerCase();
+  const errors = {};
 
   const whiteSpace = new RegExp(/\s/);
 
@@ -19,11 +20,11 @@ const checkCreateUserData = (firstName, lastName, email, password) => {
   }
 
   if (!checkEmailRegex(userEmail)) {
-    return false;
+    return { error: "Invalid email address format" };
   }
 
-  if (password.length < 10) {
-    return false;
+  if (password.length < 8) {
+    return { error: "Password must be at least 8 chars" };
   }
 
   const data = {

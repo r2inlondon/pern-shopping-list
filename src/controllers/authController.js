@@ -22,15 +22,26 @@ const registerUser = async (req, res, next) => {
     const existingUser = await findUserByEmail(email);
 
     if (existingUser) {
-      res.status(400);
+      res.status(409);
       throw new Error("Email already in use.");
     }
 
-    const data = checkCreateUSerData(firstName, lastName, email, password);
-    const user = await createUser(data);
-    const { accessToken, refreshToken } = generateTokens(user.id);
+    const confirmedUserInput = checkCreateUSerData(
+      firstName,
+      lastName,
+      email,
+      password
+    );
 
-    await refreshTokenToUser(user.id, refreshToken);
+    if (confirmedUserInput.error) {
+      res.status(400);
+      throw new Error(confirmedUserInput.error);
+    }
+
+    const newUser = await createUser(confirmedUserInput);
+    const { accessToken, refreshToken } = generateTokens(newUser.id);
+
+    await refreshTokenToUser(newUser.id, refreshToken);
 
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
