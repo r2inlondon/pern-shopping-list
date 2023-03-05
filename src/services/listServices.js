@@ -8,6 +8,14 @@ const findAll = (userId) => {
   });
 };
 
+const findList = (name) => {
+  return db.list.findFirst({
+    where: {
+      name,
+    },
+  });
+};
+
 const createList = (userId, name) => {
   return db.list.create({
     data: {
@@ -25,4 +33,4 @@ const removeList = (id) => {
   });
 };
 
-module.exports = { findAll, createList, removeList };
+module.exports = { findAll, createList, findList, removeList };

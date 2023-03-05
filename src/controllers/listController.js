@@ -1,5 +1,10 @@
 const capitalizedWord = require("../utils/capitalizedWord");
-const { findAll, createList, removeList } = require("../services/listServices");
+const {
+  findAll,
+  findList,
+  createList,
+  removeList,
+} = require("../services/listServices");
 
 const getLists = async (req, res, next) => {
   const userId = req.userId;
@@ -15,9 +20,21 @@ const newList = async (req, res, next) => {
   const { name } = req.body;
   const userId = req.userId;
 
-  const listName = capitalizedWord(name);
-
   try {
+    if (!name) {
+      res.status(400);
+      throw new Error("Either the list name or user id were not received");
+    }
+
+    const listName = capitalizedWord(name);
+
+    const existingList = await findList(listName);
+
+    if (existingList) {
+      res.status(409);
+      throw new Error("Already registered list name");
+    }
+
     const newList = await createList(userId, listName);
 
     res.json(newList);

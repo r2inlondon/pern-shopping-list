@@ -7,7 +7,7 @@ const {
   updateShoppingItem,
 } = require("../controllers/shoppingController");
 
-router.get("/", getAllProductsFromList);
+router.get("/:shoppingId", getAllProductsFromList);
 router.post("/new", newShoppingItem);
 router.put("/", updateShoppingItem);
 router.delete("/", deleteShoppingItem);

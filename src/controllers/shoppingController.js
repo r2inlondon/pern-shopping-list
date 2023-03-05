@@ -9,10 +9,10 @@ const {
 } = require("../services/shoppingServices");
 
 const getAllProductsFromList = async (req, res) => {
-  const { listId } = req.body;
+  const shoppingId = req.params.shoppingId;
 
   try {
-    const shoppingContent = await getAllItems(listId);
+    const shoppingContent = await getAllItems(shoppingId);
 
     res.json(shoppingContent);
   } catch (err) {
