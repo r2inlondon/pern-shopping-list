@@ -1,5 +1,13 @@
 const db = require("../utils/db");
 
+const createProduct = (name) => {
+  return db.product.create({
+    data: {
+      name,
+    },
+  });
+};
+
 const findProduct = (name) => {
   return db.product.findFirst({
     where: {
