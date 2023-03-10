@@ -19,7 +19,7 @@ describe("Test checkCreateUSerData function", () => {
       wrongEmail,
       password
     );
-    expect(result).toBe(false);
+    expect(result.error).toContain("Invalid");
   });
 
   test("Submitting short password, result must be false", () => {
@@ -30,6 +30,6 @@ describe("Test checkCreateUSerData function", () => {
       email,
       wrongPassword
     );
-    expect(result).toBe(false);
+    expect(result.error).toContain("at least 8");
   });
 });
