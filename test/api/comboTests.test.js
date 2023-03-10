@@ -39,12 +39,12 @@ describe("Combining tests", () => {
       .post("/lists/new")
       .send({
         userId: authTokens.id,
-        name: "gigante",
+        name: "soriana",
       })
       .set("Authorization", `Bearer ${authTokens.accessToken}`)
       .then((res) => {
         listObj = res.body;
-        expect(res.body.name).toBe("Gigante");
+        expect(res.body.name).toBe("Soriana");
       });
   });
 
@@ -73,10 +73,7 @@ describe("Combining tests", () => {
 
   it("Get products in list", async () => {
     await request(app)
-      .get("/shopping")
-      .send({
-        listId: listObj.id,
-      })
+      .get(`/shopping/${listObj.id}`)
       .set("Authorization", `Bearer ${authTokens.accessToken}`)
       .then((res) => {
         shoppingObj = res.body[0];
