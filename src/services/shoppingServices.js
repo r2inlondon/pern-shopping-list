@@ -11,6 +11,15 @@ const getAllItems = (listId) => {
   });
 };
 
+const findProductOnList = (listId, productId) => {
+  return db.shopping.findFirst({
+    where: {
+      listId,
+      productId,
+    },
+  });
+};
+
 const createNewProductAndInsert = (productName, listId) => {
   return db.product.create({
     data: {
@@ -60,6 +69,7 @@ const deleteItem = (id) => {
 };
 
 module.exports = {
+  findProductOnList,
   createNewProductAndInsert,
   addExistingProductToList,
   getAllItems,

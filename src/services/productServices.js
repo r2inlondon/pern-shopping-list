@@ -8,7 +8,7 @@ const createProduct = (name) => {
   });
 };
 
-const findProduct = (name) => {
+const findProductInCatalog = (name) => {
   return db.product.findFirst({
     where: {
       name,
@@ -30,4 +30,4 @@ const findByName = (name) => {
   });
 };
 
-module.exports = { gellAll, findProduct };
+module.exports = { gellAll, findProductInCatalog };

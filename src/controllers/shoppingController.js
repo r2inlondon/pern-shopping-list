@@ -1,6 +1,7 @@
 const capitalizedWord = require("../utils/capitalizedWord");
-const { findProduct } = require("../services/productServices");
+const { findProductInCatalog } = require("../services/productServices");
 const {
+  findProductOnList,
   createNewProductAndInsert,
   addExistingProductToList,
   getAllItems,
@@ -22,21 +23,36 @@ const getAllProductsFromList = async (req, res) => {
 
 const newShoppingItem = async (req, res, next) => {
   const { listId, name } = req.body;
+  let newProductOnList;
+  let productAlreadyOnList;
 
   const productName = capitalizedWord(name);
 
-  let productOnList;
-
   try {
-    const productFound = await findProduct(productName);
+    const ProductInCatalog = await findProductInCatalog(productName);
 
-    if (productFound) {
-      productOnList = await addExistingProductToList(listId, productFound.id);
-    } else {
-      productOnList = await createNewProductAndInsert(productName, listId);
+    if (ProductInCatalog) {
+      productAlreadyOnList = await findProductOnList(
+        listId,
+        ProductInCatalog.id
+      );
     }
 
-    res.json(productOnList);
+    if (productAlreadyOnList) {
+      res.status(409);
+      throw new Error("Duplicated product in list");
+    }
+
+    if (ProductInCatalog) {
+      newProductOnList = await addExistingProductToList(
+        listId,
+        ProductInCatalog.id
+      );
+    } else {
+      newProductOnList = await createNewProductAndInsert(productName, listId);
+    }
+
+    res.json(newProductOnList);
   } catch (err) {
     next(err);
   }
