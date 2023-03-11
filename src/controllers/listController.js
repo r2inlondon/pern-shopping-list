@@ -21,16 +21,20 @@ const newList = async (req, res, next) => {
   const userId = req.userId;
 
   try {
-    if (!name) {
+    const whiteSpace = new RegExp(/\s/);
+
+    if (!name || whiteSpace.test(name)) {
       res.status(400);
-      throw new Error("Either the list name or user id were not received");
+      throw new Error("Bad entry on list name");
     }
 
     const listName = capitalizedWord(name);
 
-    const existingList = await findList(listName);
+    const allUserLists = await findAll(userId);
 
-    if (existingList) {
+    const existingList = allUserLists.filter((list) => list.name === listName);
+
+    if (existingList.length > 0) {
       res.status(409);
       throw new Error("Already registered list name");
     }

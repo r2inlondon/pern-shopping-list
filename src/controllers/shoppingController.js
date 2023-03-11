@@ -7,6 +7,7 @@ const {
   getAllItems,
   updateItem,
   deleteItem,
+  deleteMultipleItems,
 } = require("../services/shoppingServices");
 
 const getAllProductsFromList = async (req, res) => {
@@ -82,9 +83,21 @@ const deleteShoppingItem = async (req, res, next) => {
   }
 };
 
+const deleteCompletedItems = async (req, res, next) => {
+  const { listId } = req.body;
+
+  try {
+    const itemsDeleted = await deleteMultipleItems(listId);
+    res.json(itemsDeleted);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getAllProductsFromList,
   newShoppingItem,
   deleteShoppingItem,
   updateShoppingItem,
+  deleteCompletedItems,
 };
