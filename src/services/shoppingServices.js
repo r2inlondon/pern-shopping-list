@@ -68,6 +68,15 @@ const deleteItem = (id) => {
   });
 };
 
+const deleteMultipleItems = (listId) => {
+  return db.shopping.deleteMany({
+    where: {
+      listId,
+      completed: true,
+    },
+  });
+};
+
 module.exports = {
   findProductOnList,
   createNewProductAndInsert,
@@ -75,4 +84,5 @@ module.exports = {
   getAllItems,
   updateItem,
   deleteItem,
+  deleteMultipleItems,
 };

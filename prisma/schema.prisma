@@ -24,7 +24,7 @@ model User {
 
 model List {
   id       String     @id @default(uuid())
-  name     String     @unique @db.VarChar(255)
+  name     String     @db.VarChar(255)
   user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   String
   products Shopping[]
