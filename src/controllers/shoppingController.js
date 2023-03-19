@@ -60,13 +60,13 @@ const newShoppingItem = async (req, res, next) => {
 };
 
 const updateShoppingItem = async (req, res, next) => {
-  const { id, completed, quantity } = req.body;
+  const { id, completed, quantity = 0 } = req.body;
 
   try {
     let updatedShopping = await updateItem(id, completed, quantity);
 
     res.json(updatedShopping);
-  } catch (error) {
+  } catch (err) {
     next(err);
   }
 };

@@ -4,13 +4,13 @@ const app = express();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
-const corsOptions = require("../config/corsOptions");
-const credentials = require("../middleware/credentials");
-const auth = require("./authRoutes");
-const shopping = require("./shoppingRoutes");
-const lists = require("./listRoutes");
-const products = require("./productRoutes");
-const verifyJWT = require("../middleware/verifyJWT");
+const corsOptions = require("./src/config/corsOptions");
+const credentials = require("./src/middleware/credentials");
+const auth = require("./src/routes/authRoutes");
+const shopping = require("./src/routes/shoppingRoutes");
+const lists = require("./src/routes/listRoutes");
+const products = require("./src/routes/productRoutes");
+const verifyJWT = require("./src/middleware/verifyJWT");
 
 // Handle options credentials check - before CORS!
 // and fetch cookies credentials requirement
