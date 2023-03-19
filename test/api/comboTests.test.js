@@ -1,5 +1,5 @@
 const request = require("supertest");
-const { app } = require("../../src/routes/routes");
+const { app } = require("../../app");
 
 describe("Combining tests", () => {
   let authTokens;
