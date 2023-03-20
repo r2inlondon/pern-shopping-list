@@ -1,0 +1,41 @@
+# fly.toml file generated for shopping-list-server on 2023-03-20T10:46:06Z
+
+app = "shopping-list-server"
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = []
+
+[env]
+  PORT = "8080"
+  JWT_ACCESS_SECRET = "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N"
+  JWT_REFRESH_SECRET="c8Hy((8xYjDXMEvupNKo?Elzxf2'7bHK+{AvrLzc=IRv_kSQ}2~,X:!p,z,,auf4"
+  COOKIE_SECRET = "Xu&HI(b=Ciqdb)TF4Rx$QjHay|<Ic?EPo:GaDm4yd5<F>%DyeqlUaCQi8yVi?f"
+
+[experimental]
+  auto_rollback = true
+
+[[services]]
+  http_checks = []
+  internal_port = 8080
+  processes = ["app"]
+  protocol = "tcp"
+  script_checks = []
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+  [[services.ports]]
+    force_https = true
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+  [[services.tcp_checks]]
+    grace_period = "1s"
+    interval = "15s"
+    restart_limit = 0
+    timeout = "2s"
