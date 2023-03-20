@@ -69,7 +69,7 @@ const login = async (req, res, next) => {
 
     if (!existingUser) {
       res.status(403);
-      throw new Error("Invalid login credentials.");
+      throw new Error("User not found");
     }
 
     const validPassword = await bcrypt.compare(password, existingUser.password);
