@@ -1,5 +1,5 @@
 const allowedOrigins = [
-  "https://shoppinglist-app.netlify.app",
+  "https://myshopping-list-app.netlify.app",
   "http://127.0.0.1:5000",
   // 'http://localhost:3500',
   "http://127.0.0.1:3000",

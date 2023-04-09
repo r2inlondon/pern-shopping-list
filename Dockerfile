@@ -33,7 +33,7 @@ WORKDIR /app
 ENV NODE_ENV production
 ENV PATH /root/.volta/bin:$PATH
 
-# Run Prisma migrations
+#PRISMA migrate
 RUN npx prisma migrate deploy
 
 CMD [ "npm", "run", "start" ]
