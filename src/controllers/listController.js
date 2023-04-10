@@ -48,7 +48,7 @@ const newList = async (req, res, next) => {
 };
 
 const deleteList = async (req, res, next) => {
-  const { id } = req.body;
+  const { id } = req.params;
 
   try {
     const deletedList = await removeList(id);

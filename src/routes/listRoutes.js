@@ -14,6 +14,6 @@ const {
 
 router.get("/", getLists);
 router.post("/new", newList);
-router.delete("/", deleteList);
+router.delete("/:id", deleteList);
 
 module.exports = router;
