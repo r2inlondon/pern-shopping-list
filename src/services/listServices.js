@@ -25,6 +25,17 @@ const createList = (userId, name) => {
   });
 };
 
+const renameList = (id, name) => {
+  return db.list.update({
+    data: {
+      name,
+    },
+    where: {
+      id,
+    },
+  });
+};
+
 const removeList = (id) => {
   return db.list.delete({
     where: {
@@ -33,4 +44,4 @@ const removeList = (id) => {
   });
 };
 
-module.exports = { findAll, createList, findList, removeList };
+module.exports = { findAll, createList, findList, renameList, removeList };

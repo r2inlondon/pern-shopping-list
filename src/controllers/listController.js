@@ -3,6 +3,7 @@ const {
   findAll,
   findList,
   createList,
+  renameList,
   removeList,
 } = require("../services/listServices");
 
@@ -17,13 +18,12 @@ const getLists = async (req, res, next) => {
 };
 
 const newList = async (req, res, next) => {
-  const { name } = req.body;
+  let { name } = req.body;
   const userId = req.userId;
+  name = name.trim();
 
   try {
-    const whiteSpace = new RegExp(/\s/);
-
-    if (!name || whiteSpace.test(name)) {
+    if (name.length === 0) {
       res.status(400);
       throw new Error("Bad entry on list name");
     }
@@ -47,6 +47,21 @@ const newList = async (req, res, next) => {
   }
 };
 
+const updateList = async (req, res, next) => {
+  const { id } = req.params;
+  const { name } = req.body;
+  const trimmedName = name.trim();
+  const listName = capitalizedWord(trimmedName);
+
+  try {
+    const updatedList = await renameList(id, listName);
+
+    res.json(updatedList);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const deleteList = async (req, res, next) => {
   const { id } = req.params;
 
@@ -59,4 +74,4 @@ const deleteList = async (req, res, next) => {
   }
 };
 
-module.exports = { getLists, newList, deleteList };
+module.exports = { getLists, newList, updateList, deleteList };

@@ -4,6 +4,7 @@ const router = express.Router();
 const {
   getLists,
   newList,
+  updateList,
   deleteList,
 } = require("../controllers/listController");
 
@@ -14,6 +15,7 @@ const {
 
 router.get("/", getLists);
 router.post("/new", newList);
+router.put("/:id", updateList);
 router.delete("/:id", deleteList);
 
 module.exports = router;
